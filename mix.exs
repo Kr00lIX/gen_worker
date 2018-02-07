@@ -1,11 +1,16 @@
 defmodule GenWorker.MixProject do
   use Mix.Project
 
+  @version "0.0.1"
+
   def project do
     [
       app: :gen_worker,
-      version: "0.0.1",
-      elixir: "~> 1.6",
+      name: "GenWorker",
+      description: "Worker behavior that helps to run task at a specific time with a specified frequency.",
+      version: @version,
+      elixir: ">= 1.3.0",
+      package: package(),      
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -23,5 +28,16 @@ defmodule GenWorker.MixProject do
     [
       {:timex, "~> 3.0"}
     ]
+  end
+
+  # Settings for publishing in Hex package manager:
+  defp package do
+    %{
+      contributors: ["Kr00lIX"],
+      maintainers: ["Anatoliy Kovalchuk"],
+      links: %{github: "https://github.com/Kr00lIX/gen_worker"},
+      licenses: ["LISENSE.md"],
+      files: ~w(lib LICENSE.md mix.exs README.md)
+    }      
   end
 end
