@@ -26,13 +26,15 @@ defmodule GenWorker.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:timex, "~> 3.0"}
+      {:timex, "~> 3.0"},
+      {:ex_doc, ">= 0.0.0", only: :dev}
     ]
   end
 
   # Settings for publishing in Hex package manager:
   defp package do
     %{
+      package: "gen_worker",
       contributors: ["Kr00lIX"],
       maintainers: ["Anatoliy Kovalchuk"],
       links: %{github: "https://github.com/Kr00lIX/gen_worker"},
