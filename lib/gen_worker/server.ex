@@ -8,7 +8,7 @@ defmodule GenWorker.Server do
   end
 
   def init(state) do
-    Logger.debug("Init worker with state: #{inspect(state)}")
+    Logger.debug("GenWorker: Init worker with state: #{inspect(state)}")
     schedule_work(state)
     {:ok, state}
   end
@@ -35,7 +35,9 @@ defmodule GenWorker.Server do
           end).()
       |> Timex.diff(current_time, :milliseconds)
 
-    Logger.debug("Schedule run worker after #{call_after_msec} msec")
+  defp schedule_work(%State{}=state) do
+    call_after_msec = delay_in_msec(state)
+    Logger.debug("GenWorker run worker after #{call_after_msec} msec")
     Process.send_after(self(), :run_work, call_after_msec)
   end
 

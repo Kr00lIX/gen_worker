@@ -45,7 +45,7 @@ def start(_type, _args) do
 end
 ```
 
-Documentation can be found at [https://hexdocs.pm/gen_worker](https://hexdocs.pm/gen_worker).
+Documentation can be found at [https://hexdocs.pm/gen_worker](https://hexdocs.pm/gen_worker/).
 
 ## Supported options
 `start_at` – keyword list with integers values. Supported keys: 
