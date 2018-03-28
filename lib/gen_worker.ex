@@ -12,27 +12,27 @@ defmodule GenWorker do
   @callback run(term()) :: term()
 
   @type run_at_options() :: [
-                              date: Timex.Types.date(),
-                              year: Timex.Types.year(),
-                              month: Timex.Types.month(),
-                              day: Timex.Types.day(),
-                              hour: Timex.Types.hour(),
-                              minute: Timex.Types.minute(),
-                              second: Timex.Types.second(),
-                              microsecond: Timex.Types.microsecond()
-                            ]
+    date: Timex.Types.date(),
+    year: Timex.Types.year(),
+    month: Timex.Types.month(),
+    day: Timex.Types.day(),
+    hour: Timex.Types.hour(),
+    minute: Timex.Types.minute(),
+    second: Timex.Types.second(),
+    microsecond: Timex.Types.microsecond()
+  ]
 
   @type run_each_options :: [
-                              microseconds: integer(),
-                              milliseconds: integer(),
-                              seconds: integer(),
-                              minutes: integer(),
-                              hours: integer(),
-                              days: integer(),
-                              weeks: integer(),
-                              months: integer(),
-                              years: integer()
-                            ]
+    microseconds: integer(),
+    milliseconds: integer(),
+    seconds: integer(),
+    minutes: integer(),
+    hours: integer(),
+    days: integer(),
+    weeks: integer(),
+    months: integer(),
+    years: integer()
+  ]
 
   @doc false
   defmacro __using__(opts) do
