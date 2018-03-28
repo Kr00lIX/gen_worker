@@ -8,6 +8,4 @@ matrix:
       otp_release: 20.1
     - elixir: 1.5.2
       otp_release: 18.1  
-notifications:
-  recipients:
-    - kr00lix@gmail.com
+script: mix coveralls.travis

@@ -12,7 +12,9 @@ defmodule GenWorker.MixProject do
       elixir: ">= 1.3.0",
       package: package(),      
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: ["coveralls": :test, "coveralls.detail": :test, "coveralls.post": :test, "coveralls.html": :test]    
     ]
   end
 
@@ -27,7 +29,9 @@ defmodule GenWorker.MixProject do
   defp deps do
     [
       {:timex, "~> 3.0"},
-      {:ex_doc, ">= 0.0.0", only: :dev}
+
+      {:ex_doc, ">= 0.0.0", only: :dev},
+      {:excoveralls, "~> 0.8", only: :test}
     ]
   end
 
