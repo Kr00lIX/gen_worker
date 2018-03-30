@@ -24,5 +24,24 @@ defmodule GenWorkerTest do
 
       assert Timex.before?(time1, time2)
     end
-  end 
+  end
+
+  test "run worker once a day" do
+    
+  end
+
+  describe ".validate" do
+    test "validate input params" do
+      
+    end
+  end
+
+  describe "check defaults" do
+    test "without arguments"
+
+    test "without callback" do
+      
+    end
+  end
+
 end
