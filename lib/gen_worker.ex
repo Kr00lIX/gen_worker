@@ -37,7 +37,7 @@ defmodule GenWorker do
   @doc false
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts], location: :keep do
-      @behaviour GenWorker 
+      @behaviour GenWorker
       @options opts
 
       @doc """
@@ -48,7 +48,8 @@ defmodule GenWorker do
           caller: __MODULE__,
           options: params,
           run_at: Keyword.fetch!(@options, :run_at),
-          run_each: Keyword.fetch!(@options, :run_each)
+          run_each: Keyword.fetch!(@options, :run_each),
+          timezone: Keyword.get(@options, :timezone, nil)
         }
 
         GenServer.start_link(GenWorker.Server, state, name: __MODULE__)
