@@ -1,7 +1,7 @@
 defmodule GenWorker.MixProject do
   use Mix.Project
 
-  @version "0.0.1"
+  @version "0.0.2"
 
   def project do
     [
@@ -9,7 +9,7 @@ defmodule GenWorker.MixProject do
       name: "GenWorker",
       description: "Worker behavior that helps to run task at a specific time with a specified frequency.",
       version: @version,
-      elixir: ">= 1.3.0",
+      elixir: "~> 1.4",
       package: package(),      
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -29,8 +29,8 @@ defmodule GenWorker.MixProject do
     [
       {:timex, "~> 3.0"},
 
-      {:ex_doc, ">= 0.0.0", only: :dev},
-      {:excoveralls, "~> 0.8", only: :test}
+      {:excoveralls, "~> 0.8", only: :test},
+      {:ex_doc, "~> 0.17", only: :docs}
     ]
   end
 
@@ -41,7 +41,7 @@ defmodule GenWorker.MixProject do
       contributors: ["Kr00lIX"],
       maintainers: ["Anatoliy Kovalchuk"],
       links: %{github: "https://github.com/Kr00lIX/gen_worker"},
-      licenses: ["LISENSE.md"],
+      licenses: ["LICENSE.md"],
       files: ~w(lib LICENSE.md mix.exs README.md)
     }      
   end

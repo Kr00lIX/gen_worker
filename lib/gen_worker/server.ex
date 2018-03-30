@@ -19,21 +19,21 @@ defmodule GenWorker.Server do
     {:noreply, %{state | last_called_at: getNow(zone)}}
   end
 
-  defp schedule_work(%State{run_at: run_at, run_each: run_each, last_called_at: last_called_at, timezone: zone}) do
+  def delay_in_msec(%State{run_at: run_at, run_each: run_each, last_called_at: last_called_at, timezone: zone}) do
     current_time = getNow(zone)
-
-    call_after_msec =
-      current_time
-      |> Timex.set(run_at)
-      |> (fn call_at ->
-        if Timex.before?(current_time, call_at) &&
-             (last_called_at == nil || Timex.before?(call_at, last_called_at)) do
-          call_at
-        else
-          Timex.shift(call_at, run_each)
-        end
-          end).()
-      |> Timex.diff(current_time, :milliseconds)
+  
+    current_time
+    |> Timex.set(run_at)
+    |> (fn call_at ->
+      if Timex.before?(current_time, call_at) &&
+            (last_called_at == nil || Timex.before?(call_at, last_called_at)) do
+        call_at
+      else
+        Timex.shift(call_at, run_each)
+      end
+        end).()
+    |> Timex.diff(current_time, :milliseconds)
+  end
 
   defp schedule_work(%State{}=state) do
     call_after_msec = delay_in_msec(state)
