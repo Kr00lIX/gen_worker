@@ -36,7 +36,9 @@ defmodule GenWorker.MixProject do
       {:timex, "~> 3.0"},
 
       {:excoveralls, "~> 0.8", only: :test},
-      {:ex_doc, "~> 0.17", only: :dev}
+
+      {:dialyxir, "~> 0.5", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.17", only: :dev, runtime: false}
     ]
   end
 
