@@ -1,57 +1,71 @@
 defmodule GenWorker do
   @moduledoc """
-  This module provides helper functions and extended
+  Generic Worker behavior that helps to run task at a specific time with a specified frequency.
+  
+
+  ## Usage
+  Define you worker module
+
+  ```elixir
+  defmodule MyWorker do
+    use GenWorker, run_at: [hour: 13, minute: 59], run_each: [days: 1]
+
+    def run(_prev_args) do
+      IO.puts "MyWorker run every day at 13:59"
+    end
+  end
+  ```
+
+  ### Supported options
+  *`run_at`* – keyword list with integers values. Supported keys: 
+   `:year`, `:month`, `:day`, `:hour`, `:minute`, `:second`, `:microsecond`.
+
+  *`run_each`* - keyword list with integers values. Supported keys: `:years`, `:months`, `:weeks`, `:days`, `:hours`, `:minutes`, `:seconds`, `:milliseconds`. Default is `[days: 1]`
+
+  *`timezone`* - valid timezone. `:utc` - by default. Receive full list of timezones call `Timex.timezones/0`
+
 
   You need to implement callback function:
-  * `run/0` that defines worker business logic  
+  `c:run/1` that defines worker business logic  
+
+   ### Add worker to the application supervision tree:
+  ```elixir
+    def start(_type, _args) do
+      import Supervisor.Spec, warn: false
+
+      children = [
+        worker(MyWorker, [])
+        # ...
+      ]
+
+      opts = [strategy: :one_for_one, name: MyApp.Supervisor]
+      Supervisor.start_link(children, opts)
+    end
+  ```
   """
 
   @doc """
   Callback that should implement task business logic that must be securely processed.
   """
-  @callback run(term()) :: term()
-
-  @type run_at_options() :: [
-    date: Timex.Types.date(),
-    year: Timex.Types.year(),
-    month: Timex.Types.month(),
-    day: Timex.Types.day(),
-    hour: Timex.Types.hour(),
-    minute: Timex.Types.minute(),
-    second: Timex.Types.second(),
-    microsecond: Timex.Types.microsecond()
-  ]
-
-  @type run_each_options :: [
-    microseconds: integer(),
-    milliseconds: integer(),
-    seconds: integer(),
-    minutes: integer(),
-    hours: integer(),
-    days: integer(),
-    weeks: integer(),
-    months: integer(),
-    years: integer()
-  ]
+  @callback run(worker_args :: term()) :: worker_args :: term()
 
   @doc false
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts], location: :keep do
-      @behaviour GenWorker
+      @behaviour GenWorker 
       @options opts
+
+      alias GenWorker.State
 
       @doc """
       Start GenServer
       """
       def start_link(params \\ nil) do
-        state = %GenWorker.Server.State{
-          caller: __MODULE__,
-          options: params,
-          run_at: Keyword.fetch!(@options, :run_at),
-          run_each: Keyword.fetch!(@options, :run_each),
-          timezone: Keyword.get(@options, :timezone, nil)
-        }
-
+        state = @options
+          |> Keyword.put(:caller, __MODULE__)
+          |> Keyword.put(:worker_args, params)
+          |> State.init!()
+        
         GenServer.start_link(GenWorker.Server, state, name: __MODULE__)
       end
 

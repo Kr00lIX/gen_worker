@@ -1,20 +1,25 @@
 defmodule GenWorker.MixProject do
   use Mix.Project
 
-  @version "0.0.2"
+  @version "0.0.3"
 
   def project do
     [
       app: :gen_worker,
-      name: "GenWorker",
-      description: "Worker behavior that helps to run task at a specific time with a specified frequency.",
       version: @version,
       elixir: "~> 1.4",
-      package: package(),      
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: ["coveralls": :test, "coveralls.travis": :test]
+      preferred_cli_env: ["coveralls": :test, "coveralls.travis": :test],
+
+      # Hex
+      description: "Worker behavior that helps to run task at a specific time with a specified frequency.",
+      package: package(),
+
+      # Docs
+      name: "GenWorker",
+      docs: docs()
     ]
   end
 
@@ -31,7 +36,7 @@ defmodule GenWorker.MixProject do
       {:timex, "~> 3.0"},
 
       {:excoveralls, "~> 0.8", only: :test},
-      {:ex_doc, "~> 0.17", only: :docs}
+      {:ex_doc, "~> 0.17", only: :dev}
     ]
   end
 
@@ -45,5 +50,14 @@ defmodule GenWorker.MixProject do
       licenses: ["LICENSE.md"],
       files: ~w(lib LICENSE.md mix.exs README.md)
     }      
+  end
+
+  def docs do
+    [
+      main: "GenWorker",
+      source_ref: "v#{@version}",
+      extras: ["README.md"],
+      source_url: "https://github.com/Kr00lIX/gen_worker"
+    ]
   end
 end

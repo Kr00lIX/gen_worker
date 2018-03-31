@@ -23,7 +23,7 @@ Then run `mix deps.get` to get the package.
 
 ```elixir
 defmodule MyWorker do
-  use GenWorker, run_at: [hour: 13, minute: 59], run_every: [days: 1]
+  use GenWorker, run_at: [hour: 13, minute: 59], run_each: [days: 1]
 
   def run do
     IO.puts "MyWorker run every day at 13:59"
@@ -49,10 +49,12 @@ end
 Documentation can be found at [https://hexdocs.pm/gen_worker](https://hexdocs.pm/gen_worker/).
 
 ## Supported options
-`start_at` – keyword list with integers values. Supported keys: 
+`run_at` – keyword list with integers values. Supported keys: 
 `:year`, `:month`, `:day`, `:hour`, `:minute`, `:second`, `:microsecond`.
 
-`run_every` - keyword list with integers values. Supported keys: `:years`, `:months`, `:weeks`, `:days`, `:hours`, `:minutes`, `:seconds`, `:milliseconds`.
+`run_each` - keyword list with integers values. Supported keys: `:years`, `:months`, `:weeks`, `:days`, `:hours`, `:minutes`, `:seconds`, `:milliseconds`. Default: `[days: 1]`
+
+`timezone` - valid timezone. `:utc` - by default
 
 
 ## License

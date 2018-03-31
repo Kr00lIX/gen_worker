@@ -29,4 +29,4 @@ use Mix.Config
 #
 #     import_config "#{Mix.env}.exs"
 
-# config :gen_worker, timezone: :utc
+config :gen_worker, timezone: :utc

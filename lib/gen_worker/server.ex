@@ -3,9 +3,7 @@ defmodule GenWorker.Server do
   use GenServer
   require Logger
 
-  defmodule State do
-    defstruct [:run_at, :caller, :run_each, :last_called_at, :options, :timezone]
-  end
+  alias GenWorker.State
 
   def init(state) do
     Logger.debug("GenWorker: Init worker with state: #{inspect(state)}")
@@ -13,25 +11,28 @@ defmodule GenWorker.Server do
     {:ok, state}
   end
 
-  def handle_info(:run_work, %{caller: caller, options: options, timezone: zone} = state) do
-    caller.run(options)
+  def handle_info(:run_work, %{caller: caller, worker_args: worker_args}=state) do
+    updated_args = caller.run(worker_args)
     schedule_work(state)
-    {:noreply, %{state | last_called_at: getNow(zone)}}
+    updated_state = state
+      |> Map.put(:last_called_at, time_now(state))
+      |> Map.put(:worker_args, updated_args)
+
+    {:noreply, updated_state}
   end
 
-  def delay_in_msec(%State{run_at: run_at, run_each: run_each, last_called_at: last_called_at, timezone: zone}) do
-    current_time = getNow(zone)
-  
+  def delay_in_msec(%State{run_at: run_at, run_each: run_each, last_called_at: last_called_at}=state) do
+    current_time = time_now(state)
     current_time
     |> Timex.set(run_at)
     |> (fn call_at ->
-      if Timex.before?(current_time, call_at) &&
-            (last_called_at == nil || Timex.before?(call_at, last_called_at)) do
-        call_at
-      else
-        Timex.shift(call_at, run_each)
-      end
-        end).()
+          if Timex.before?(current_time, call_at) &&
+                (last_called_at == nil || Timex.before?(call_at, last_called_at)) do
+            call_at
+          else
+            Timex.shift(call_at, run_each)
+          end
+    end).()
     |> Timex.diff(current_time, :milliseconds)
   end
 
@@ -41,8 +42,8 @@ defmodule GenWorker.Server do
     Process.send_after(self(), :run_work, call_after_msec)
   end
 
-  defp getNow(nil),  do: Timex.now()
-  defp getNow(zone), do: getNow(Timex.is_valid_timezone?(zone), zone)
-  defp getNow(true, zone),   do: Timex.now(zone)
-  defp getNow(false, _zone), do: Timex.now()
+  defp time_now(%State{timezone: timezone}) do
+    Timex.now(timezone)
+  end
+
 end
