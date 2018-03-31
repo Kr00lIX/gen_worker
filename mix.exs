@@ -10,8 +10,6 @@ defmodule GenWorker.MixProject do
       elixir: "~> 1.4",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: ["coveralls": :test, "coveralls.travis": :test],
 
       # Hex
       description: "Worker behavior that helps to run task at a specific time with a specified frequency.",
@@ -19,7 +17,14 @@ defmodule GenWorker.MixProject do
 
       # Docs
       name: "GenWorker",
-      docs: docs()
+      docs: docs(),
+
+      # Test
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: ["coveralls": :test, "coveralls.travis": :test],
+      
+      # Dev
+      dialyzer: [ flags: ["-Wunmatched_returns", :error_handling, :underspecs]]
     ]
   end
 

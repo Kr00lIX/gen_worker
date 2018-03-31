@@ -5,12 +5,15 @@ defmodule GenWorker.Server do
 
   alias GenWorker.State
 
+  @spec init(State.t) :: {:ok, State.t}
   def init(state) do
     Logger.debug("GenWorker: Init worker with state: #{inspect(state)}")
     schedule_work(state)
     {:ok, state}
   end
 
+  @doc false
+  @spec handle_info(:run_work, State.t) :: {:noreply, State.t}
   def handle_info(:run_work, %{caller: caller, worker_args: worker_args}=state) do
     updated_args = caller.run(worker_args)
     schedule_work(state)
@@ -21,8 +24,8 @@ defmodule GenWorker.Server do
     {:noreply, updated_state}
   end
 
-  def delay_in_msec(%State{run_at: run_at, run_each: run_each, last_called_at: last_called_at}=state) do
-    current_time = time_now(state)
+  @spec delay_in_msec(DateTime.t, State.t) :: integer()
+  def delay_in_msec(current_time, %State{run_at: run_at, run_each: run_each, last_called_at: last_called_at}) do    
     current_time
     |> Timex.set(run_at)
     |> (fn call_at ->
@@ -36,12 +39,14 @@ defmodule GenWorker.Server do
     |> Timex.diff(current_time, :milliseconds)
   end
 
+  @spec schedule_work(State.t) :: reference()
   defp schedule_work(%State{}=state) do
-    call_after_msec = delay_in_msec(state)
+    call_after_msec = delay_in_msec(time_now(state), state)
     Logger.debug("GenWorker run worker after #{call_after_msec} msec")
     Process.send_after(self(), :run_work, call_after_msec)
   end
 
+  @spec time_now(State.t) :: DateTime.t
   defp time_now(%State{timezone: timezone}) do
     Timex.now(timezone)
   end

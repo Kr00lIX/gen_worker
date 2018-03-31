@@ -47,9 +47,9 @@ defmodule GenWorker.State do
   defstruct [:run_at, :caller, :run_each, :last_called_at, :timezone, :worker_args]
 
   @doc """
-  Validate config
+  Init state structure and validate
   """
-  @spec init!(options) :: t | no_return() 
+  @spec init!(options) :: State.t() | no_return()  | Exception.t
   def init!(options) do
     %State{
       caller: options[:caller],
@@ -66,7 +66,7 @@ defmodule GenWorker.State do
   defp validate_run_at!(run_at) do
     case Timex.set(Timex.now, run_at) do
       %DateTime{} -> run_at
-      {:error, {:bad_option, bad_option}} ->
+      {:error, {:bad_option, bad_option}}  when is_atom(bad_option) ->
         raise Error, "Error invalid `#{bad_option}` run_at option."
       error ->
         raise Error, "Error invalid run_at option: #{inspect error}"
