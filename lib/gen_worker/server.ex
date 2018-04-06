@@ -3,19 +3,20 @@ defmodule GenWorker.Server do
   use GenServer
   require Logger
 
-  alias GenWorker.State
+  alias GenWorker.{State, Error}
 
   @spec init(State.t) :: {:ok, State.t}
   def init(state) do
-    Logger.debug("GenWorker: Init worker with state: #{inspect(state)}")
+    :ok = Logger.debug("GenWorker: Init worker with state: #{inspect(state)}")
     schedule_work(state)
     {:ok, state}
   end
 
   @doc false
-  @spec handle_info(:run_work, State.t) :: {:noreply, State.t}
+  @spec handle_info(:run_work, State.t) :: {:noreply, State.t} | no_return()
   def handle_info(:run_work, %{caller: caller, worker_args: worker_args}=state) do
     updated_args = caller.run(worker_args)
+    
     schedule_work(state)
     updated_state = state
       |> Map.put(:last_called_at, time_now(state))
@@ -39,7 +40,7 @@ defmodule GenWorker.Server do
     |> Timex.diff(current_time, :milliseconds)
   end
 
-  @spec schedule_work(State.t) :: reference()
+  @spec schedule_work(State.t) :: reference() | no_return()
   defp schedule_work(%State{}=state) do
     call_after_msec = delay_in_msec(time_now(state), state)
     Logger.debug("GenWorker run worker after #{call_after_msec} msec")

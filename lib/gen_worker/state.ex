@@ -64,9 +64,9 @@ defmodule GenWorker.State do
     raise Error, message: "No run_at defined options"
   end
   defp validate_run_at!(run_at) do
-    case Timex.set(Timex.now, run_at) do
+    case Timex.set(Timex.now(), run_at) do
       %DateTime{} -> run_at
-      {:error, {:bad_option, bad_option}}  when is_atom(bad_option) ->
+      {:error, {:bad_option, bad_option}}->
         raise Error, "Error invalid `#{bad_option}` run_at option."
       error ->
         raise Error, "Error invalid run_at option: #{inspect error}"

@@ -4,6 +4,7 @@
 [![Hex pm](https://img.shields.io/hexpm/v/gen_worker.svg?style=flat)](https://hex.pm/packages/gen_worker)
 [![Coverage Status](https://coveralls.io/repos/github/Kr00lIX/gen_worker/badge.svg?branch=master)](https://coveralls.io/github/Kr00lIX/gen_worker?branch=master)
 
+
 Generic Worker behavior that helps to run task at a specific time with a specified frequency.
 
 ## Installation and usage
@@ -49,12 +50,11 @@ end
 Documentation can be found at [https://hexdocs.pm/gen_worker](https://hexdocs.pm/gen_worker/).
 
 ## Supported options
-`run_at` – keyword list with integers values. Supported keys: 
-`:year`, `:month`, `:day`, `:hour`, `:minute`, `:second`, `:microsecond`.
+*`run_at`* – keyword list with integers values. Supported keys: `:year`, `:month`, `:day`, `:hour`, `:minute`, `:second`, `:microsecond`.
 
-`run_each` - keyword list with integers values. Supported keys: `:years`, `:months`, `:weeks`, `:days`, `:hours`, `:minutes`, `:seconds`, `:milliseconds`. Default: `[days: 1]`
+*`run_each`* - keyword list with integers values. Supported keys: `:years`, `:months`, `:weeks`, `:days`, `:hours`, `:minutes`, `:seconds`, `:milliseconds`. *Default: `[days: 1]`*.
 
-`timezone` - valid timezone. `:utc` - by default
+*`timezone`* - valid timezone. *Default: `:utc`*.
 
 
 ## License
