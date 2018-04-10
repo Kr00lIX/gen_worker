@@ -68,8 +68,6 @@ defmodule GenWorker.State do
       %DateTime{} -> run_at
       {:error, {:bad_option, bad_option}}->
         raise Error, "Error invalid `#{bad_option}` run_at option."
-      error ->
-        raise Error, "Error invalid run_at option: #{inspect error}"
     end
   end
 
@@ -81,8 +79,6 @@ defmodule GenWorker.State do
       %DateTime{} -> run_each
       {:error, {:unknown_shift_unit, bad_option}} ->
         raise Error, "Error invalid `#{bad_option}` run_each option."
-      error ->
-        raise Error, "Error invalid run_each option: #{inspect error}"
     end
   end
 
