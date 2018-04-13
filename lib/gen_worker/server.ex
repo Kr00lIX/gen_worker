@@ -7,13 +7,13 @@ defmodule GenWorker.Server do
 
   @spec init(State.t) :: {:ok, State.t}
   def init(state) do
-    :ok = Logger.debug("GenWorker: Init worker with state: #{inspect(state)}")
+    Logger.debug("GenWorker: Init worker with state: #{inspect(state)}")
     schedule_work(state)
     {:ok, state}
   end
 
   @doc false
-  @spec handle_info(:run_work, State.t) :: {:noreply, State.t} | no_return()
+  @spec handle_info(:run_work, State.t) :: {:noreply, State.t}
   def handle_info(:run_work, %{caller: caller, worker_args: worker_args}=state) do
     updated_args = caller.run(worker_args)
     
@@ -40,16 +40,21 @@ defmodule GenWorker.Server do
     |> Timex.diff(current_time, :milliseconds)
   end
 
-  @spec schedule_work(State.t) :: reference() | no_return()
+  @spec schedule_work(State.t) :: :ok
   defp schedule_work(%State{}=state) do
     call_after_msec = delay_in_msec(time_now(state), state)
     Logger.debug("GenWorker run worker after #{call_after_msec} msec")
     Process.send_after(self(), :run_work, call_after_msec)
+    :ok
   end
 
-  @spec time_now(State.t) :: DateTime.t
+  @spec time_now(State.t) :: DateTime.t | no_return()
   defp time_now(%State{timezone: timezone}) do
     Timex.now(timezone)
+    |> case do
+      %DateTime{}=datetime -> datetime
+      {:error, reason} -> raise Error, "Error invalid timezone #{timezone}: #{inspect reason}"
+    end
   end
 
 end

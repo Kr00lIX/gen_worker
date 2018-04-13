@@ -24,7 +24,7 @@ defmodule GenWorker.MixProject do
       preferred_cli_env: ["coveralls": :test, "coveralls.travis": :test],
       
       # Dev
-      dialyzer: [ flags: ["-Wunmatched_returns", :error_handling, :underspecs]]
+      dialyzer: [ignore_warnings: "dialyzer.ignore-warnings"]
     ]
   end
 

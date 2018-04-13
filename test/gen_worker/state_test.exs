@@ -13,17 +13,15 @@ defmodule GenWorker.StateTest do
 
   test "expect valid config for running once a day", %{options: options} do
     assert %State{
-        run_at: [hour: 13, minute: 59], 
+        run_at: [microsecond: {1, 0}, hour: 13, minute: 59], 
         run_each: [days: 1]
       } = State.init!(options)
   end
 
   describe ":run_at option" do
-    test "expect raise error without run_at option", %{options: options} do
+    test "expect receive default without run_at option", %{options: options} do
       update_options = Keyword.delete(options, :run_at)
-      assert_raise Error, "No run_at defined options", fn ->
-        State.init!(update_options)
-      end
+      assert %State{run_at: [microsecond: {1, 0}], run_each: [days: 1]} = State.init!(update_options)
     end  
 
     test "expect raise error for invalid option", %{options: options} do

@@ -5,8 +5,9 @@ defmodule GenWorker.State do
   alias GenWorker.{State, Error}
 
   @default_run_each [days: 1]
+  @default_run_at [{:microsecond, {1, 0}}]
   
-  @type run_at_options() :: [
+  @typep run_at_options() :: [
     date: Timex.Types.date(),
     year: Timex.Types.year(),
     month: Timex.Types.month(),
@@ -17,7 +18,7 @@ defmodule GenWorker.State do
     microsecond: Timex.Types.microsecond()
   ]
 
-  @type run_each_options :: [
+  @typep run_each_options :: [
     microseconds: integer(),
     milliseconds: integer(),
     seconds: integer(),
@@ -29,7 +30,7 @@ defmodule GenWorker.State do
     years: integer()
   ]
 
-  @type t :: %State{
+  @type t :: %__MODULE__{
     run_at: run_at_options(),
     run_each: run_each_options(),
     caller: atom(),
@@ -40,7 +41,6 @@ defmodule GenWorker.State do
 
   @type options :: [
     run_at: run_at_options(),
-
     run_each: run_each_options()
   ]
 
@@ -60,12 +60,12 @@ defmodule GenWorker.State do
     }
   end
 
-  defp validate_run_at!(run_at) when is_nil(run_at) or run_at === [] do
-    raise Error, message: "No run_at defined options"
+  defp validate_run_at!(run_at) when is_nil(run_at) do
+    @default_run_at
   end
   defp validate_run_at!(run_at) do
     case Timex.set(Timex.now(), run_at) do
-      %DateTime{} -> run_at
+      %DateTime{} -> Keyword.put_new(run_at, :microsecond, {1, 0})
       {:error, {:bad_option, bad_option}}->
         raise Error, "Error invalid `#{bad_option}` run_at option."
     end
