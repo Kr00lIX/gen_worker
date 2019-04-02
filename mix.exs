@@ -1,7 +1,7 @@
 defmodule GenWorker.MixProject do
   use Mix.Project
 
-  @version "0.0.4"
+  @version "0.0.5"
 
   def project do
     [
@@ -22,7 +22,7 @@ defmodule GenWorker.MixProject do
       # Test
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: ["coveralls": :test, "coveralls.travis": :test],
-      
+
       # Dev
       dialyzer: [ignore_warnings: "dialyzer.ignore-warnings"]
     ]
@@ -57,7 +57,7 @@ defmodule GenWorker.MixProject do
       links: %{github: "https://github.com/Kr00lIX/gen_worker"},
       licenses: ["LICENSE.md"],
       files: ~w(lib LICENSE.md mix.exs README.md)
-    }      
+    }
   end
 
   def docs do
