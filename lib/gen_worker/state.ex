@@ -40,7 +40,7 @@ defmodule GenWorker.State do
         }
 
   @type options :: [
-          run_at: run_at_options() | %{(binary() | atom()) => run_at_options(), ...},
+          run_at: run_at_options() | %{(binary() | atom()) => run_at_options()},
           run_each: run_each_options()
         ]
 
