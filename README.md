@@ -52,6 +52,12 @@ Documentation can be found at [https://hexdocs.pm/gen_worker](https://hexdocs.pm
 ## Supported options
 *`run_at`* – keyword list with integers values. Supported keys: `:year`, `:month`, `:day`, `:hour`, `:minute`, `:second`, `:microsecond`.
 
+Or you can use map for multiple runs:
+
+```elixir
+use GenWorker, run_at: %{"some_key" => [hour: 13, minute: 59], "other_key" => [hour: 14, minute: 00]}, run_each: [days: 1]
+```
+
 *`run_each`* - keyword list with integers values. Supported keys: `:years`, `:months`, `:weeks`, `:days`, `:hours`, `:minutes`, `:seconds`, `:milliseconds`. *Default: `[days: 1]`*.
 
 *`timezone`* - valid timezone. *Default: `:utc`*.

@@ -1,7 +1,7 @@
 defmodule GenWorker do
   @moduledoc """
   Generic Worker behavior that helps to run task at a specific time with a specified frequency.
-  
+
 
   ## Usage
   Define you worker module
@@ -17,8 +17,14 @@ defmodule GenWorker do
   ```
 
   ### Supported options
-  *`run_at`* – keyword list with integers values. Supported keys: 
+  *`run_at`* – keyword list with integers values. Supported keys:
    `:year`, `:month`, `:day`, `:hour`, `:minute`, `:second`, `:microsecond`.
+
+    Or you can use map for multiple runs:
+
+    ```elixir
+    use GenWorker, run_at: %{"some_key" => [hour: 13, minute: 59], "other_key" => [hour: 14, minute: 00]}, run_each: [days: 1]
+    ```
 
   *`run_each`* - keyword list with integers values. Supported keys: `:years`, `:months`, `:weeks`, `:days`, `:hours`, `:minutes`, `:seconds`, `:milliseconds`. Default is `[days: 1]`
 
@@ -26,7 +32,7 @@ defmodule GenWorker do
 
 
   You need to implement callback function:
-  `c:run/1` that defines worker business logic  
+  `c:run/1` that defines worker business logic
 
    ### Add worker to the application supervision tree:
   ```elixir
@@ -52,7 +58,7 @@ defmodule GenWorker do
   @doc false
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts], location: :keep do
-      @behaviour GenWorker 
+      @behaviour GenWorker
       @options opts
 
       alias GenWorker.State
@@ -65,7 +71,7 @@ defmodule GenWorker do
           |> Keyword.put(:caller, __MODULE__)
           |> Keyword.put(:worker_args, params)
           |> State.init!()
-        
+
         GenServer.start_link(GenWorker.Server, state, name: __MODULE__)
       end
 
