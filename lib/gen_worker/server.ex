@@ -60,7 +60,12 @@ defmodule GenWorker.Server do
   @spec calc_one_work(State.run_at_options(), binary() | atom(), State.t()) :: reference()
   defp calc_one_work(time, key, state) do
     call_after_msec = delay_in_msec(time_now(state), time, state)
-    Logger.debug("GenWorker run worker \"#{key}\" after #{call_after_msec} msec")
+
+    h_time =
+      Timex.Duration.from_milliseconds(call_after_msec)
+      |> Timex.Format.Duration.Formatters.Humanized.format()
+
+    Logger.debug("GenWorker run worker \"#{key}\" after #{h_time}")
     Process.send_after(self(), {:run_work, key}, call_after_msec)
   end
 
