@@ -5,7 +5,7 @@ defmodule GenWorker.StateTest do
   setup do
     options = [
       caller: __MODULE__,
-      run_at: [hour: 13, minute: 59], 
+      run_at: [hour: 13, minute: 59],
       run_each: [days: 1]
     ]
     [options: options]
@@ -13,7 +13,9 @@ defmodule GenWorker.StateTest do
 
   test "expect valid config for running once a day", %{options: options} do
     assert %State{
-        run_at: [microsecond: {1, 0}, hour: 13, minute: 59], 
+        run_at: %{
+          "default" => [microsecond: {1, 0}, hour: 13, minute: 59]
+        },
         run_each: [days: 1]
       } = State.init!(options)
   end
@@ -21,8 +23,11 @@ defmodule GenWorker.StateTest do
   describe ":run_at option" do
     test "expect receive default without run_at option", %{options: options} do
       update_options = Keyword.delete(options, :run_at)
-      assert %State{run_at: [microsecond: {1, 0}], run_each: [days: 1]} = State.init!(update_options)
-    end  
+      assert %State{
+        run_at: %{"default" => [microsecond: {1, 0}]},
+        run_each: [days: 1]
+      } = State.init!(update_options)
+    end
 
     test "expect raise error for invalid option", %{options: options} do
       update_options = Keyword.put(options, :run_at, [hourss: 10, m: 20])
@@ -31,7 +36,7 @@ defmodule GenWorker.StateTest do
       end
     end
   end
- 
+
   describe ":run_each option" do
     test "expect raise error for invalid run_each key option", %{options: options} do
       update_options = Keyword.put(options, :run_each, [d: 1])
@@ -68,13 +73,13 @@ defmodule GenWorker.StateTest do
     test "expect set valid timezone from options", %{options: options} do
       update_options = Keyword.put(options, :timezone, "Europe/Kiev")
       Application.put_env(:gen_worker, :timezone, :utc)
-      assert %State{timezone: "Europe/Kiev"} = State.init!(update_options)   
+      assert %State{timezone: "Europe/Kiev"} = State.init!(update_options)
     end
 
     test "expect set utc timezone for if not defined", %{options: options} do
       update_options = Keyword.delete(options, :timezone)
       Application.delete_env(:gen_worker, :timezone)
-      assert %State{timezone: :utc} = State.init!(update_options)   
+      assert %State{timezone: :utc} = State.init!(update_options)
     end
   end
-end  
+end

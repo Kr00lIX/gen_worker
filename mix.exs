@@ -24,7 +24,7 @@ defmodule GenWorker.MixProject do
 
       # Test
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: ["coveralls": :test, "coveralls.travis": :test],
+      preferred_cli_env: [coveralls: :test, 'coveralls.travis': :test],
 
       # Dev
       dialyzer: [ignore_warnings: "dialyzer.ignore-warnings"]
