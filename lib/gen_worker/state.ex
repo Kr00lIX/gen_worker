@@ -2,7 +2,7 @@ defmodule GenWorker.State do
   @moduledoc """
   Configure worker
   """
-  alias GenWorker.{State, Error}
+  alias GenWorker.{Error, State}
 
   @default_run_each [days: 1]
   @default_run_at [{:microsecond, {1, 0}}]

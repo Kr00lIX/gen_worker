@@ -1,6 +1,6 @@
 defmodule GenWorker.StateTest do
   use ExUnit.Case, async: true
-  alias GenWorker.{State, Error}
+  alias GenWorker.{Error, State}
 
   setup do
     options = [

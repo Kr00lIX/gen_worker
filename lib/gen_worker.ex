@@ -1,7 +1,6 @@
 defmodule GenWorker do
-  @moduledoc """
+  @moduledoc ~S"""
   Generic Worker behavior that helps to run task at a specific time with a specified frequency.
-
 
   ## Usage
   Define you worker module
@@ -29,7 +28,6 @@ defmodule GenWorker do
   *`run_each`* - keyword list with integers values. Supported keys: `:years`, `:months`, `:weeks`, `:days`, `:hours`, `:minutes`, `:seconds`, `:milliseconds`. Default is `[days: 1]`
 
   *`timezone`* - valid timezone. `:utc` - by default. Receive full list of timezones call `Timex.timezones/0`
-
 
   You need to implement callback function:
   `c:run/1` that defines worker business logic

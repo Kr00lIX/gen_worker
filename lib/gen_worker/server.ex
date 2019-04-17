@@ -3,9 +3,9 @@ defmodule GenWorker.Server do
   use GenServer
   require Logger
 
-  alias GenWorker.{State, Error}
-  alias Timex.Format.Duration.Formatters.Humanized, as: TimexHumanize
+  alias GenWorker.{Error, State}
   alias Timex.Duration
+  alias Timex.Format.Duration.Formatters.Humanized, as: TimexHumanize
 
   @spec init(State.t()) :: {:ok, State.t()}
   def init(state) do

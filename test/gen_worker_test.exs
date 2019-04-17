@@ -1,11 +1,11 @@
 defmodule GenWorkerTest do
   use ExUnit.Case, async: true
   doctest GenWorker
-  
+
   describe "worker each second" do
     defmodule TestWorker do
       use GenWorker, run_at: [microsecond: {1, 0}], run_each: [seconds: 1]
-      
+
       def run(current_pid) do
         send(current_pid, {:task_worker, Timex.now})
         current_pid
@@ -30,7 +30,7 @@ defmodule GenWorkerTest do
   describe "worker with zero minute" do
     defmodule ZeroMinuteWorker do
       use GenWorker, run_each: [seconds: 1]
-      
+
       def run(current_pid) do
         send(current_pid, {:task_worker, Timex.now})
         current_pid

@@ -10,4 +10,5 @@ defmodule GenWorker.App do
       ]
     Supervisor.start_link(children, opts)
   end
+
 end
