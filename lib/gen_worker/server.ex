@@ -63,7 +63,8 @@ defmodule GenWorker.Server do
   defp calc_one_work(time, key, state) do
     call_after_msec = delay_in_msec(time_now(state), time, state)
 
-    h_time = call_after_msec
+    h_time =
+      call_after_msec
       |> Duration.from_milliseconds()
       |> TimexHumanize.format()
 

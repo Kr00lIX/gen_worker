@@ -9,7 +9,7 @@ defmodule GenWorker.MixProject do
       app: :gen_worker,
       version: @version,
       elixir: ">= 1.4.0",
-      build_embedded: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps(),
 
@@ -24,7 +24,7 @@ defmodule GenWorker.MixProject do
 
       # Test
       test_coverage: [tool: ExCoveralls],
-      preferred_cli_env: [coveralls: :test, 'coveralls.travis': :test],
+      preferred_cli_env: [coveralls: :test, "coveralls.travis": :test],
 
       # Dev
       dialyzer: [ignore_warnings: "dialyzer.ignore-warnings"]

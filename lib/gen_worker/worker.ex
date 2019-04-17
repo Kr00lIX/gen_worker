@@ -9,5 +9,4 @@ defmodule GenWorker.Worker do
   def init(_opts) do
     {:ok, []}
   end
-
 end

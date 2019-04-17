@@ -65,7 +65,8 @@ defmodule GenWorker do
       Start GenServer
       """
       def start_link(params \\ nil) do
-        state = @options
+        state =
+          @options
           |> Keyword.put(:caller, __MODULE__)
           |> Keyword.put(:worker_args, params)
           |> State.init!()
@@ -78,7 +79,7 @@ defmodule GenWorker do
         raise "Behaviour function #{__MODULE__}.run/1 is not implemented!"
       end
 
-      defoverridable [run: 1]
+      defoverridable run: 1
     end
   end
 end

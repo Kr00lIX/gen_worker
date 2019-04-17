@@ -8,30 +8,33 @@ defmodule GenWorker.StateTest do
       run_at: [hour: 13, minute: 59],
       run_each: [days: 1]
     ]
+
     [options: options]
   end
 
   test "expect valid config for running once a day", %{options: options} do
     assert %State{
-        run_at: %{
-          "default" => [microsecond: {1, 0}, hour: 13, minute: 59]
-        },
-        run_each: [days: 1]
-      } = State.init!(options)
+             run_at: %{
+               "default" => [microsecond: {1, 0}, hour: 13, minute: 59]
+             },
+             run_each: [days: 1]
+           } = State.init!(options)
   end
 
   describe ":run_at option" do
     test "expect receive default without run_at option", %{options: options} do
       update_options = Keyword.delete(options, :run_at)
+
       assert %State{
-        run_at: %{"default" => [microsecond: {1, 0}]},
-        run_each: [days: 1]
-      } = State.init!(update_options)
+               run_at: %{"default" => [microsecond: {1, 0}]},
+               run_each: [days: 1]
+             } = State.init!(update_options)
     end
 
     test "expect raise error for invalid option", %{options: options} do
-      update_options = Keyword.put(options, :run_at, [hourss: 10, m: 20])
-      assert_raise Error, "Error invalid `hourss` run_at option.",  fn ->
+      update_options = Keyword.put(options, :run_at, hourss: 10, m: 20)
+
+      assert_raise Error, "Error invalid `hourss` run_at option.", fn ->
         State.init!(update_options)
       end
     end
@@ -39,7 +42,8 @@ defmodule GenWorker.StateTest do
 
   describe ":run_each option" do
     test "expect raise error for invalid run_each key option", %{options: options} do
-      update_options = Keyword.put(options, :run_each, [d: 1])
+      update_options = Keyword.put(options, :run_each, d: 1)
+
       assert_raise Error, "Error invalid `d` run_each option.", fn ->
         State.init!(update_options)
       end
@@ -51,7 +55,7 @@ defmodule GenWorker.StateTest do
     end
 
     test "expect get each day option", %{options: options} do
-      update_options = Keyword.put(options, :run_each, [minutes: 10, seconds: 5])
+      update_options = Keyword.put(options, :run_each, minutes: 10, seconds: 5)
       assert %State{run_each: [minutes: 10, seconds: 5]} = State.init!(update_options)
     end
   end
@@ -59,7 +63,8 @@ defmodule GenWorker.StateTest do
   describe ":timezone option" do
     test "expect raise error for invalid option", %{options: options} do
       update_options = Keyword.put(options, :timezone, "invalid")
-      assert_raise Error, "Error invalid `invalid` timezone.",  fn ->
+
+      assert_raise Error, "Error invalid `invalid` timezone.", fn ->
         State.init!(update_options)
       end
     end

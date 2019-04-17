@@ -7,7 +7,7 @@ defmodule GenWorkerTest do
       use GenWorker, run_at: [microsecond: {1, 0}], run_each: [seconds: 1]
 
       def run(current_pid) do
-        send(current_pid, {:task_worker, Timex.now})
+        send(current_pid, {:task_worker, Timex.now()})
         current_pid
       end
     end
@@ -32,7 +32,7 @@ defmodule GenWorkerTest do
       use GenWorker, run_each: [seconds: 1]
 
       def run(current_pid) do
-        send(current_pid, {:task_worker, Timex.now})
+        send(current_pid, {:task_worker, Timex.now()})
         current_pid
       end
     end

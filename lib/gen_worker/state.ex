@@ -8,15 +8,15 @@ defmodule GenWorker.State do
   @default_run_at [{:microsecond, {1, 0}}]
 
   @type run_at_options() :: [
-           date: Timex.Types.date(),
-           year: Timex.Types.year(),
-           month: Timex.Types.month(),
-           day: Timex.Types.day(),
-           hour: Timex.Types.hour(),
-           minute: Timex.Types.minute(),
-           second: Timex.Types.second(),
-           microsecond: Timex.Types.microsecond()
-         ]
+          date: Timex.Types.date(),
+          year: Timex.Types.year(),
+          month: Timex.Types.month(),
+          day: Timex.Types.day(),
+          hour: Timex.Types.hour(),
+          minute: Timex.Types.minute(),
+          second: Timex.Types.second(),
+          microsecond: Timex.Types.microsecond()
+        ]
 
   @typep run_each_options :: [
            microseconds: integer(),
