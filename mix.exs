@@ -44,9 +44,13 @@ defmodule GenWorker.MixProject do
     [
       {:timex, "~> 3.0"},
 
+      # Test
       {:excoveralls, "~> 0.8", only: :test},
+      {:junit_formatter, "~> 2.1", only: :test},
+      {:credo, "~> 0.8", only: [:dev, :test]},
 
-      {:dialyxir, "~> 0.5", only: :dev, runtime: false},
+      # Dev
+      {:dialyxir, "~> 1.0.0-rc.4", only: :dev, runtime: false},
       {:ex_doc, "~> 0.19", only: :dev, runtime: false}
     ]
   end

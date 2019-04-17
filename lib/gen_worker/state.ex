@@ -67,7 +67,7 @@ defmodule GenWorker.State do
     do: %{"default" => run_at_validator!(run_at)}
 
   defp validate_run_at!(run_at) when is_map(run_at) do
-    Map.values(run_at) |> Enum.each(&run_at_validator!/1)
+    run_at |> Map.values() |> Enum.each(&run_at_validator!/1)
     run_at
   end
 

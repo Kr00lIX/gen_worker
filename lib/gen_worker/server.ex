@@ -4,10 +4,12 @@ defmodule GenWorker.Server do
   require Logger
 
   alias GenWorker.{State, Error}
+  alias Timex.Format.Duration.Formatters.Humanized, as: TimexHumanize
+  alias Timex.Duration
 
   @spec init(State.t()) :: {:ok, State.t()}
   def init(state) do
-    Logger.debug("GenWorker: Init worker with state: #{inspect(state)}")
+    Logger.debug(fn -> "GenWorker: Init worker with state: #{inspect(state)}" end)
     schedule_work(state)
     {:ok, state}
   end
@@ -61,18 +63,17 @@ defmodule GenWorker.Server do
   defp calc_one_work(time, key, state) do
     call_after_msec = delay_in_msec(time_now(state), time, state)
 
-    h_time =
-      Timex.Duration.from_milliseconds(call_after_msec)
-      |> Timex.Format.Duration.Formatters.Humanized.format()
+    h_time = call_after_msec
+      |> Duration.from_milliseconds()
+      |> TimexHumanize.format()
 
-    Logger.debug("GenWorker run worker \"#{key}\" after #{h_time}")
+    Logger.debug(fn -> "GenWorker run worker \"#{key}\" after #{h_time}" end)
     Process.send_after(self(), {:run_work, key}, call_after_msec)
   end
 
   @spec time_now(State.t()) :: DateTime.t() | no_return()
   defp time_now(%State{timezone: timezone}) do
-    Timex.now(timezone)
-    |> case do
+    case Timex.now(timezone) do
       %DateTime{} = datetime -> datetime
       {:error, reason} -> raise Error, "Error invalid timezone #{timezone}: #{inspect(reason)}"
     end
