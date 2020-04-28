@@ -1,7 +1,7 @@
 defmodule GenWorker.MixProject do
   use Mix.Project
 
-  @version "0.0.5"
+  @version "0.0.7"
   @github_url "https://github.com/Kr00lIX/gen_worker"
 
   def project do
