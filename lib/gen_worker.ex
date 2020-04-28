@@ -59,6 +59,8 @@ defmodule GenWorker do
       @behaviour GenWorker
       @options opts
 
+      use GenServer
+
       alias GenWorker.State
 
       @doc """
@@ -74,12 +76,22 @@ defmodule GenWorker do
         GenServer.start_link(GenWorker.Server, state, name: __MODULE__)
       end
 
+      def child_spec(opts) do
+        %{
+          id: __MODULE__,
+          start: {__MODULE__, :start_link, [opts]},
+          type: :worker,
+          restart: :permanent,
+          shutdown: 500
+        }
+      end
+
       @doc false
       def run(_params) do
         raise "Behaviour function #{__MODULE__}.run/1 is not implemented!"
       end
 
-      defoverridable run: 1
+      defoverridable run: 1, child_spec: 1
     end
   end
 end
