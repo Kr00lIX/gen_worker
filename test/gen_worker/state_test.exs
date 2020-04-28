@@ -44,7 +44,7 @@ defmodule GenWorker.StateTest do
     test "expect raise error for invalid run_each key option", %{options: options} do
       update_options = Keyword.put(options, :run_each, d: 1)
 
-      assert_raise Error, "Error invalid `d` run_each option.", fn ->
+      assert_raise Error, "Error invalid `{:d, 1}` run_each option.", fn ->
         State.init!(update_options)
       end
     end

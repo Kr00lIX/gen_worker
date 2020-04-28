@@ -59,8 +59,6 @@ defmodule GenWorker do
       @behaviour GenWorker
       @options opts
 
-      use GenServer
-
       alias GenWorker.State
 
       @doc """
