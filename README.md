@@ -1,6 +1,6 @@
 # GenWorker
 
-[![Build Status](https://travis-ci.org/Kr00lIX/gen_worker.svg?branch=master)](https://travis-ci.org/Kr00lIX/gen_worker)
+![Elixir CI](https://github.com/Kr00lIX/gen_worker/workflows/Elixir%20CI/badge.svg)
 [![Hex pm](https://img.shields.io/hexpm/v/gen_worker.svg?style=flat)](https://hex.pm/packages/gen_worker)
 [![Coverage Status](https://coveralls.io/repos/github/Kr00lIX/gen_worker/badge.svg?branch=master)](https://coveralls.io/github/Kr00lIX/gen_worker?branch=master)
 
