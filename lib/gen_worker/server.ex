@@ -10,6 +10,9 @@ defmodule GenWorker.Server do
   @spec init(State.t()) :: {:ok, State.t()}
   def init(state) do
     Logger.debug(fn -> "GenWorker: Init worker with state: #{inspect(state)}" end)
+
+    GenWorker.Callback.run(:init, state)
+
     schedule_work(state)
     {:ok, state}
   end
@@ -20,7 +23,9 @@ defmodule GenWorker.Server do
         {:run_work, key},
         %{caller: caller, worker_args: worker_args, run_at: run_at} = state
       ) do
+    GenWorker.Callback.run(:before, state)
     updated_args = caller.run(worker_args)
+    GenWorker.Callback.run(:finally, state)
 
     calc_one_work(run_at[key], key, state)
 

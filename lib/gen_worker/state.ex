@@ -80,7 +80,7 @@ defmodule GenWorker.State do
         raise Error, "Error invalid `#{bad_option}` run_at option."
 
       {:error, reason} ->
-        raise Error, "Error invalid run_at option: #{inspect reason}"
+        raise Error, "Error invalid run_at option: #{inspect(reason)}"
     end
   end
 
@@ -94,10 +94,10 @@ defmodule GenWorker.State do
         run_each
 
       {:error, {:invalid_shift, bad_option}} ->
-        raise Error, "Error invalid `#{inspect bad_option}` run_each option."
+        raise Error, "Error invalid `#{inspect(bad_option)}` run_each option."
 
-        {:error, reason} ->
-          raise Error, "Error invalid run_each option: #{inspect reason}"
+      {:error, reason} ->
+        raise Error, "Error invalid run_each option: #{inspect(reason)}"
     end
   end
 

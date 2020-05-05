@@ -92,4 +92,19 @@ defmodule GenWorker do
       defoverridable run: 1, child_spec: 1
     end
   end
+
+  @doc """
+  Allows to set the config options.
+
+      GenWorker.configure(fn(config) ->
+        config.before fn()->
+          IO.puts "runs before task hook"
+        end
+
+        config.finally fn()->
+          IO.puts "runs after task hook"
+        end
+      end)
+  """
+  def configure(func), do: GenWorker.Configuration.configure(func)
 end

@@ -63,5 +63,26 @@ use GenWorker, run_at: %{"some_key" => [hour: 13, minute: 59], "other_key" => [h
 *`timezone`* - valid timezone. *Default: `:utc`*.
 
 
+## Configuration
+You can define callbacks to all workers:
+
+* `init` -> calls on initializing worker 
+* `before` -> calls each time before worker task starts
+* `finally` -> calls each time on the end worker task
+
+For exampLe it could be used in the tests `test_helper.exs`
+
+```elixir
+  GenWorker.configure(fn c ->
+    c.init(fn _module, _args ->
+      :ok = Ecto.Adapters.SQL.Sandbox.checkout(App.Repo)
+      Ecto.Adapters.SQL.Sandbox.mode(Repo, {:shared, self()})
+      :ok
+    end)
+  end)
+
+```
+
+
 ## License
 This software is licensed under [the MIT license](LICENSE.md).
