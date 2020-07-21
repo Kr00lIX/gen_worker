@@ -37,6 +37,10 @@ defmodule GenWorker.Server do
     {:noreply, updated_state}
   end
 
+  def handle_info(_event, state) do
+    {:noreply, state}
+  end
+
   @spec delay_in_msec(DateTime.t(), State.run_at_options(), State.t()) :: integer()
   def delay_in_msec(current_time, run_at, %State{
         run_each: run_each,
